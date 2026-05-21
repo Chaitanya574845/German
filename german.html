@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danke, Harshita Ma’am ❤️</title>
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Playfair Display (Serif), Caveat (Handwritten), Plus Jakarta Sans (Modern) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- React & Babel CDNs -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Tailwind Configuration for customized look -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            cursive: ['"Caveat"', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Premium custom styles & CSS transitions */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #fda4af;
+      border-radius: 10px;
+    }
+
+    /* Ambient floating keyframes */
+    @keyframes float-slower {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(3deg); }
+    }
+    @keyframes float-faster {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(-3deg); }
+    }
+    @keyframes drift-up {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      50% { opacity: 0.25; }
+      100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+    }
+
+    .float-slow {
+      animation: float-slower 6s ease-in-out infinite;
+    }
+    .float-fast {
+      animation: float-faster 4s ease-in-out infinite;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    /* Letter background lining */
+    .lined-paper {
+      background-image: linear-gradient(rgba(244, 63, 94, 0.1) 1px, transparent 1px);
+      background-size: 100% 2.2rem;
+    }
+  </style>
+</head>
+<body class="bg-[#fdfbf7] text-stone-800 overflow-x-hidden">
+
+  <!-- React Mount Point -->
+  <div id="root"></div>
+
+  <!-- Lucide Icons Library -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- React Application Logic -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    const CLASS_PHOTO = "https://img.sanishtech.com/u/8b32be7780e6918711996af832d78e64.jpg";
+    const BACKGROUND_MUSIC_URL = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"; // High quality soothing music
+
+    // --- Loading Screen Component ---
+    function LoadingScreen({ onComplete }) {
+      useEffect(() => {
+        const timer = setTimeout(onComplete, 2800);
+        return () => clearTimeout(timer);
+      }, [onComplete]);
+
+      return (
+        <div className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-stone-900 transition-all duration-1000">
+          <div className="relative flex flex-col items-center">
+            <div className="absolute w-48 h-48 bg-rose-500/20 rounded-full blur-3xl animate-pulse" />
+            <h1 className="text-3xl md:text-5xl font-serif text-amber-100 tracking-widest font-light z-10 text-center">
+              Preparing Memories...
+            </h1>
+            <p className="text-sm text-rose-300/60 mt-4 tracking-wider z-10 font-sans uppercase">
+              Compiling chaotic class moments
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // --- Custom Cursor Glow Tracker ---
+    function CustomCursor() {
+      const [position, setPosition] = useState({ x: 0, y: 0 });
+      const [isPointer, setIsPointer] = useState(false);
+
+      useEffect(() => {
+        const updateCursor = (e) => {
+          setPosition({ x: e.clientX, y: e.clientY });
+          const target = e.target;
+          setIsPointer(window.getComputedStyle(target).cursor === 'pointer');
+        };
+        window.addEventListener('mousemove', updateCursor);
+        return () => window.removeEventListener('mousemove', updateCursor);
+      }, []);
+
+      return (
+        <div 
+          className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] mix-blend-screen hidden md:block transition-transform duration-100 ease-out"
+          style={{
+            transform: `translate3d(${position.x - 16}px, ${position.y - 16}px, 0) scale(${isPointer ? 1.5 : 1})`,
+            backgroundColor: isPointer ? 'rgba(251, 113, 133, 0.4)' : 'rgba(251, 191, 36, 0.2)',
+            boxShadow: isPointer ? '0 0 25px rgba(251, 113, 133, 0.7)' : '0 0 10px rgba(251, 191, 36, 0.3)',
+          }}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-rose-200 rounded-full" />
+        </div>
+      );
+    }
+
+    // --- Ambient Floating Particle Words ---
+    function FloatingWords() {
+      const words = ["Danke", "der? die? das?!", "Erinnerungen", "Lächeln", "German Classes", "Tschüss"];
+      return (
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          {words.map((word, i) => (
+            <div
+              key={word}
+              className="absolute text-rose-500/5 font-serif text-2xl md:text-4xl whitespace-nowrap"
+              style={{
+                left: `${10 + i * 16}%`,
+                animation: `drift-up ${12 + i * 3}s linear infinite`,
+                animationDelay: `${i * 2}s`,
+                top: '100%',
+              }}
+            >
+              {word}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // --- Elegant 3D Letter Overlay/Modal ---
+    function LetterOverlay({ isOpen, onClose }) {
+      const [stage, setStage] = useState('envelope'); // 'envelope', 'opening', 'letter'
+
+      useEffect(() => {
+        if (isOpen) setStage('envelope');
+      }, [isOpen]);
+
+      const handleOpen = () => {
+        setStage('opening');
+        setTimeout(() => setStage('letter'), 1200);
+      };
+
+      if (!isOpen) return null;
+
+      return (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-stone-950/90 backdrop-blur-xl p-4 md:p-10 transition-opacity duration-500">
+          <button 
+            onClick={onClose} 
+            className="absolute top-6 right-6 text-white/50 hover:text-white hover:scale-110 transition-all z-[210] p-2"
+          >
+            <i data-lucide="x" class="w-8 h-8"></i>
+          </button>
+
+          <div className="relative w-full max-w-3xl aspect-[4/3] md:aspect-video flex items-center justify-center">
+            {stage === 'envelope' && (
+              <div 
+                onClick={handleOpen}
+                className="relative w-full max-w-md aspect-[3/2] cursor-pointer group transition-all duration-500 transform hover:-translate-y-2 hover:scale-105"
+              >
+                {/* Clean envelope design mimicking the exact uploaded layout */}
+                <div className="absolute inset-0 bg-gradient-to-br from-rose-400 to-rose-500 rounded-2xl shadow-2xl flex flex-col justify-center items-center border border-rose-300 ring-4 ring-rose-300/10">
+                  {/* Clean line-art envelope styling details */}
+                  <svg viewBox="0 0 100 70" class="w-48 h-36 stroke-rose-100 fill-none transition-transform duration-500 group-hover:scale-110" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="5" y="5" width="90" height="60" rx="10" />
+                    <path d="M 5 5 L 50 38 L 95 5" />
+                    <path d="M 5 65 L 35 38" />
+                    <path d="M 95 65 L 65 38" />
+                  </svg>
+                  
+                  {/* Heart Seal Indicator */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-white/95 rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform border border-rose-200">
+                    <i data-lucide="heart" class="w-7 h-7 text-rose-500 fill-rose-500"></i>
+                  </div>
+                  
+                  <p className="absolute bottom-4 w-full text-center font-serif text-rose-100 italic text-sm tracking-widest drop-shadow-md">
+                    Click to Open Letter ✨
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {stage === 'opening' && (
+              <div className="absolute w-48 h-48 bg-rose-400/40 rounded-full blur-3xl animate-ping" />
+            )}
+
+            {stage === 'letter' && (
+              <div 
+                className="relative w-full h-full bg-[#fdfbf7] rounded-2xl p-8 md:p-14 shadow-[0_0_50px_rgba(251,113,133,0.15)] overflow-y-auto custom-scrollbar border border-amber-900/5 animate-fade-in-up"
+              >
+                <div className="max-w-xl mx-auto space-y-7 font-serif text-stone-700 leading-relaxed text-lg md:text-xl lined-paper pt-2">
+                  <p className="font-semibold text-stone-800 text-xl md:text-2xl">Dear Harshita Ma’am,</p>
+                  
+                  <p>German classes were never just normal classes for us.</p>
+                  
+                  <p>
+                    They were filled with laughter, fun moments, jokes, and us collectively panicking over whether a simple table is <span className="font-semibold text-rose-500 italic">der, die, or das</span>. 😂
+                  </p>
+                  
+                  <p>
+                    You made learning a language (where words are randomly 30 letters long) feel incredibly exciting and special. 
+                  </p>
+                  
+                  <p>
+                    School will definitely not feel the same without you. Seriously, who else is going to tolerate our chaotic energy and broken German pronunciation now? 
+                  </p>
+                  
+                  <p>
+                    Thank you for being such an amazing teacher, for your endless patience, and for giving us unforgettable memories that we will always laugh about.
+                  </p>
+                  
+                  <p className="font-medium text-stone-800 flex items-center gap-2">
+                    We will truly miss you. <i data-lucide="heart" class="inline text-rose-500 fill-rose-500 w-5 h-5 animate-pulse"></i>
+                  </p>
+
+                  <div className="mt-12 pt-8 text-right font-cursive text-3xl text-rose-700">
+                    <p className="text-sm font-sans tracking-widest uppercase text-stone-400 not-italic">Mit freundlichen Grüßen,</p>
+                    <p className="mt-2 font-bold">— Chaitanya Aggarwal</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // --- Main Application View ---
+    function App() {
+      const [loading, setLoading] = useState(true);
+      const [letterOpen, setLetterOpen] = useState(false);
+      const [isPlaying, setIsPlaying] = useState(false);
+      const audioRef = useRef(null);
+
+      // Initialize icons after React renders
+      useEffect(() => {
+        if (!loading) {
+          lucide.createIcons();
+        }
+      }, [loading, letterOpen]);
+
+      const toggleMusic = () => {
+        if (!audioRef.current) {
+          audioRef.current = new Audio(BACKGROUND_MUSIC_URL);
+          audioRef.current.loop = true;
+        }
+        if (isPlaying) {
+          audioRef.current.pause();
+        } else {
+          audioRef.current.play().catch(e => console.log("User gesture required for audio playback."));
+        }
+        setIsPlaying(!isPlaying);
+      };
+
+      if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
+
+      return (
+        <div className="relative min-h-screen">
+          <CustomCursor />
+          <FloatingWords />
+
+          {/* Floating Soothing Music Control */}
+          <button 
+            onClick={toggleMusic}
+            className="fixed top-6 right-6 z-50 p-3.5 rounded-full glass-card shadow-lg hover:scale-110 transition-transform text-stone-700 hover:text-rose-500"
+          >
+            <i data-lucide={isPlaying ? "music" : "volume-x"} class={`w-5 h-5 ${isPlaying ? 'animate-pulse' : ''}`}></i>
+          </button>
+
+          {/* --- HERO / LANDING SECTION --- */}
+          <section className="relative h-[100vh] flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 z-0">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 blur-[8px] opacity-70"
+                style={{ backgroundImage: `url(${CLASS_PHOTO})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#fdfbf7]/40 via-amber-50/60 to-[#fdfbf7] mix-blend-overlay" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#fdfbf7] via-transparent to-transparent" />
+            </div>
+
+            <div className="relative z-10 container mx-auto px-6 text-center max-w-4xl">
+              <span className="inline-block mb-6 px-4 py-1.5 rounded-full glass-card text-xs md:text-sm font-semibold text-rose-600 uppercase tracking-widest shadow-sm">
+                A Farewell Tribute
+              </span>
+              
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-stone-800 mb-6 leading-tight">
+                Danke, <br className="md:hidden" />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-500 via-amber-500 to-rose-400">
+                  Harshita Ma’am
+                </span> ❤️
+              </h1>
+
+              <p className="text-lg md:text-2xl text-stone-600 font-serif italic mb-12 max-w-2xl mx-auto leading-relaxed">
+                “Some teachers teach subjects… but some teach memories.”
+              </p>
+
+              <button
+                onClick={() => document.getElementById('memories').scrollIntoView({ behavior: 'smooth' })}
+                className="flex flex-col items-center gap-3 mx-auto text-stone-500 hover:text-rose-500 transition-colors cursor-pointer group"
+              >
+                <span className="uppercase tracking-widest text-xs font-semibold">Scroll to Reminisce</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 animate-bounce text-rose-400"></i>
+              </button>
+            </div>
+          </section>
+
+          {/* --- GALLERY SECTION --- */}
+          <section id="memories" className="py-32 px-6 relative z-10 bg-gradient-to-b from-transparent to-stone-100/50">
+            <div className="container mx-auto max-w-6xl">
+              <div className="text-center mb-20">
+                <h2 className="text-4xl md:text-5xl font-serif text-stone-800 mb-4">Cherished Moments</h2>
+                <div className="w-24 h-1 bg-rose-300 mx-auto rounded-full" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[250px]">
+                
+                {/* Core Real Class Photo */}
+                <div 
+                  className="md:col-span-8 md:row-span-2 relative rounded-3xl overflow-hidden group shadow-2xl cursor-pointer"
+                >
+                  <img 
+                    src={CLASS_PHOTO} 
+                    alt="Class Memory with Harshita Ma'am" 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <p className="text-white font-serif text-2xl mb-1 drop-shadow-md">One picture.</p>
+                    <p className="text-rose-200 font-serif text-xl drop-shadow-md">Hundreds of chaotic memories. ❤️</p>
+                  </div>
+                </div>
+
+                {/* Grid Item 2 */}
+                <div className="md:col-span-4 md:row-span-1 rounded-3xl glass-card flex flex-col items-center justify-center p-6 text-center group hover:bg-white/80 transition-colors shadow-sm">
+                  <div className="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform">
+                    <i data-lucide="image" class="w-6 h-6 text-rose-500"></i>
+                  </div>
+                  <p className="font-serif text-stone-700 text-lg font-semibold">Best Moments</p>
+                  <p className="text-sm text-stone-500 mt-1">Laughter & Learning Combined</p>
+                </div>
+
+                {/* Grid Item 3 */}
+                <div className="md:col-span-4 md:row-span-1 rounded-3xl bg-gradient-to-br from-rose-100 to-indigo-50 flex flex-col items-center justify-center p-6 text-center group overflow-hidden relative shadow-sm">
+                  <p className="font-serif text-stone-800 text-xl font-medium relative z-10 italic">"Fun German Classes"</p>
+                  <div className="absolute -bottom-6 -right-6 text-rose-200/50 w-24 h-24 transform group-hover:rotate-12 transition-transform duration-700">
+                    <i data-lucide="stars" class="w-full h-full"></i>
+                  </div>
+                </div>
+
+                {/* Grid Item 4 */}
+                <div className="md:col-span-12 md:row-span-1 rounded-3xl glass-card overflow-hidden relative flex items-center justify-center group shadow-sm hover:shadow-md transition-all">
+                  <div className="absolute inset-0 bg-rose-50/50 group-hover:bg-rose-100/50 transition-colors duration-500" />
+                  <p className="relative z-10 font-serif text-2xl md:text-3xl text-stone-700 tracking-wide text-center px-4">
+                    Memories We’ll Never Forget ✨
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+          {/* --- CLASSROOM CHRONICLES (TIMELINE) --- */}
+          <section className="py-24 px-6 relative z-10 bg-white/20">
+            <div className="container mx-auto max-w-3xl">
+              <div className="text-center mb-20">
+                <h2 className="text-3xl md:text-4xl font-serif text-stone-800 mb-2">Classroom Chronicles</h2>
+                <p className="text-stone-500">The funny, chaotic, and special little things</p>
+              </div>
+
+              <div className="space-y-8 relative">
+                <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-amber-200 via-rose-300 to-transparent -translate-x-1/2 md:translate-x-0" />
+
+                {[
+                  { text: "Guessing der/die/das with 100% confidence and being 100% wrong 😭", align: "left" },
+                  { text: "That time everyone struggled with pronunciation and we all just laughed 😂", align: "right" },
+                  { text: "The random fun talks and jokes before the serious class began ❤️", align: "left" },
+                  { text: "Trying to read a 35-letter compound word without passing out 😮‍💨", align: "right" },
+                ].map((memory, index) => (
+                  <div 
+                    key={index}
+                    className={`flex items-center gap-6 relative ${memory.align === 'left' ? 'md:flex-row-reverse' : ''} md:justify-center`}
+                  >
+                    <div className="absolute left-4 md:left-1/2 w-4 h-4 bg-white border-4 border-rose-400 rounded-full -translate-x-1/2 md:translate-x-0 z-10 shadow-[0_0_15px_rgba(251,113,133,0.6)]" />
+                    
+                    <div className={`w-full md:w-1/2 pl-12 md:pl-0 ${memory.align === 'left' ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
+                      <div className="glass-card p-5 rounded-2xl shadow-sm hover:shadow-lg hover:border-rose-200 transition-all inline-block">
+                        <p className="text-stone-700 font-medium text-lg leading-relaxed">{memory.text}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* --- THE LETTER REVEAL SECTION --- */}
+          <section className="py-28 px-6 relative z-10 flex flex-col items-center justify-center">
+            <div className="text-center mb-8 max-w-md">
+              <p className="text-rose-500 font-serif italic text-lg mb-2">You have (1) Unread Letter</p>
+              <h3 className="text-stone-400 text-sm tracking-widest uppercase">Click on the envelope to open</h3>
+            </div>
+
+            <div 
+              onClick={() => setLetterOpen(true)}
+              className="relative cursor-pointer inline-flex justify-center items-center group transition-transform duration-500 hover:scale-110 active:scale-95"
+            >
+              {/* Soft pink ambient background glow */}
+              <div className="absolute inset-0 bg-rose-400 blur-3xl opacity-20 group-hover:opacity-40 transition-opacity rounded-full" />
+              
+              {/* Clean pink line envelope rendering matching 1000100847.jpg layout */}
+              <div className="p-8 bg-[#fdfbf7] rounded-3xl border border-rose-200/50 shadow-2xl group-hover:shadow-rose-100 transition-shadow">
+                <svg viewBox="0 0 100 70" class="w-48 h-36 stroke-rose-400 fill-none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="5" y="5" width="90" height="60" rx="10" />
+                  <path d="M 5 5 L 50 38 L 95 5" />
+                  <path d="M 5 65 L 35 38" />
+                  <path d="M 95 65 L 65 38" />
+                </svg>
+              </div>
+
+              {/* Glowing notification badge */}
+              <div className="absolute -top-1 -right-1 w-8 h-8 bg-rose-500 rounded-full border-4 border-[#fdfbf7] flex items-center justify-center animate-bounce z-20 shadow-md">
+                <span className="text-xs text-white font-bold">1</span>
+              </div>
+            </div>
+
+            <p className="mt-8 text-rose-500 font-medium uppercase tracking-widest text-xs animate-pulse">
+              Open Our Letter
+            </p>
+          </section>
+
+          {/* --- CINEMATIC ENDING SECTION --- */}
+          <section className="py-32 px-6 relative overflow-hidden bg-stone-900 text-stone-100 flex flex-col items-center justify-center text-center">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-amber-900/40 to-rose-900/40 rounded-full blur-[120px] pointer-events-none" />
+            
+            <div className="relative z-10 max-w-4xl mx-auto">
+              <div className="mb-8 flex justify-center animate-pulse">
+                <i data-lucide="heart" class="w-12 h-12 text-rose-500 fill-rose-500 filter drop-shadow-[0_0_15px_rgba(244,63,94,0.6)]"></i>
+              </div>
+
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif leading-tight mb-12">
+                <span className="text-stone-300">You may be leaving the school…</span><br/>
+                <span className="text-amber-100">but you’ll always stay in our memories.</span>
+              </h2>
+
+              <div className="w-full max-w-md mx-auto h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-12" />
+
+              <p className="text-xl md:text-2xl font-serif text-stone-300 italic mb-2">
+                Made with respect, memories, and lots of smiles ❤️
+              </p>
+              <p className="text-rose-400 font-medium tracking-wider uppercase text-sm mt-4 font-sans">
+                — Chaitanya Aggarwal
+              </p>
+            </div>
+          </section>
+
+          {/* --- FOOTER --- */}
+          <footer className="bg-stone-950 py-8 relative border-t border-white/5 text-center overflow-hidden">
+            <div className="absolute top-0 left-0 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-rose-400/40 to-transparent animate-pulse" />
+            <p className="text-stone-500 font-serif text-sm tracking-widest uppercase">
+              Danke für alles, Harshita Ma’am ✨
+            </p>
+          </footer>
+
+          <LetterOverlay isOpen={letterOpen} onClose={() => setLetterOpen(false)} />
+        </div>
+      );
+    }
+
+    // Render the React components to the DOM
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
